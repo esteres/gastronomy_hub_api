@@ -2,14 +2,18 @@ module Claimable
   extend ActiveSupport::Concern
 
   included do
-    validate :user_cannot_claim_own_tags
-  end
+    enum priority: { low: 0, medium: 1, high: 2 }
 
-  private
+    validates :name, presence: true, length: { maximum: 100 }
+    validates_uniqueness_of :name, case_sensitive: false
+    validates :priority, inclusion: { in: priorities.keys }
 
-  def user_cannot_claim_own_tags
-    if user == tag.creator
-      errors.add(:base, "User cannot claim their own #{tag.class.name.downcase}s")
+    scope :active, -> { where(active: true) }
+
+    def initialize(*args)
+      @downcase_field = :name
+
+      super
     end
   end
 end
