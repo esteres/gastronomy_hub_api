@@ -45,7 +45,11 @@ group :development do
   # gem "spring"
 
   gem "error_highlight", ">= 0.4.0", platforms: [:ruby]
-  gem "rspec-rails"
   gem "factory_bot_rails"
+  gem 'rspec-rails', '~> 6.1', '>= 6.1.2'
+end
+
+group :test do
+  gem 'shoulda-matchers'
 end
 
