@@ -1,9 +1,13 @@
 class User < ApplicationRecord
   include SharedMethods
 
+  has_many :categories_created,
+		-> { active },
+		class_name: 'Category'
   has_many :tags_created,
     -> { active },
 		class_name: 'Tag'
+  has_many :claimed_categories, dependent: :destroy
   has_many :claimed_tags, dependent: :destroy
 
   PASSWORD_REGEX = /\A(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#?])[a-zA-Z\d!@#?]{10,}\z/

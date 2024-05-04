@@ -4,7 +4,9 @@ RSpec.describe User, type: :model do
   let!(:user) { create(:user) }
 
   describe 'associations' do
+    it { should have_many(:categories_created).class_name('Category') }
     it { should have_many(:tags_created).class_name('Tag') }
+    it { should have_many(:claimed_categories).dependent(:destroy) }
     it { should have_many(:claimed_tags).dependent(:destroy) }
   end
 
@@ -35,6 +37,17 @@ RSpec.describe User, type: :model do
   end
 
   describe 'scopes' do
+    describe '.categories_created' do
+      it 'returns categories created by the user' do
+        user = create(:user)
+        category1 = create(:category, user_id: user.id)
+        category2 = create(:category)
+
+        expect(user.categories_created).to include(category1)
+        expect(user.categories_created).not_to include(category2)
+      end
+    end
+
     describe '.tags_created' do
       it 'returns tags created by the user' do
         user = create(:user)
