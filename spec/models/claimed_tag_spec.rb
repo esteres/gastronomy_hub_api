@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe ClaimedTag, type: :model do
-  let!(:user) { create(:user) }
-  let!(:tag) { create(:tag, user: user) }
+  let(:user) { create(:user) }
+  let(:tag) { create(:tag, user: user) }
 
   describe 'validations' do
-    let!(:user2) { create(:user) }
-    let!(:tag2) { create(:tag, user: user) }
+    let(:user2) { create(:user) }
+    let(:tag2) { create(:tag, user: user) }
     let!(:claimed_tag) { create(:claimed_tag, user: user2, tag: tag) }
 
     it 'validates [user_id, tag_id] uniqueness' do

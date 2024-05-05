@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe ClaimedCategory, type: :model do
-  let!(:user) { create(:user) }
-  let!(:category) { create(:category, user: user) }
+  let(:user) { create(:user) }
+  let(:category) { create(:category, user: user) }
 
   describe 'validations' do
-    let!(:user2) { create(:user) }
-    let!(:category2) { create(:category, user: user) }
+    let(:user2) { create(:user) }
+    let(:category2) { create(:category, user: user) }
     let!(:claimed_category) { create(:claimed_category, user: user2, category: category) }
 
     it 'validates [user_id, category_id] uniqueness' do

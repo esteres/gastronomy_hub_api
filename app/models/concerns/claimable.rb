@@ -9,11 +9,5 @@ module Claimable
     validates :priority, inclusion: { in: priorities.keys }
 
     scope :active, -> { where(active: true) }
-
-    def initialize(*args)
-      @downcase_field = :name
-
-      super
-    end
   end
 end
