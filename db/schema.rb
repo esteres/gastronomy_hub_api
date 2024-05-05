@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_04_220739) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_05_005435) do
   create_table "categories", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "name", limit: 100, null: false
@@ -45,6 +45,36 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_04_220739) do
     t.index ["user_id"], name: "index_claimed_tags_on_user_id"
   end
 
+  create_table "restaurant_categories", force: :cascade do |t|
+    t.integer "restaurant_id", null: false
+    t.integer "category_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_restaurant_categories_on_category_id"
+    t.index ["restaurant_id", "category_id"], name: "index_restaurant_categories_on_restaurant_id_and_category_id", unique: true
+    t.index ["restaurant_id"], name: "index_restaurant_categories_on_restaurant_id"
+  end
+
+  create_table "restaurant_tags", force: :cascade do |t|
+    t.integer "restaurant_id", null: false
+    t.integer "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["restaurant_id", "tag_id"], name: "index_restaurant_tags_on_restaurant_id_and_tag_id", unique: true
+    t.index ["restaurant_id"], name: "index_restaurant_tags_on_restaurant_id"
+    t.index ["tag_id"], name: "index_restaurant_tags_on_tag_id"
+  end
+
+  create_table "restaurants", force: :cascade do |t|
+    t.string "name", limit: 100
+    t.text "description"
+    t.integer "contact_information_type"
+    t.string "contact_information", limit: 100
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_restaurants_on_name", unique: true
+  end
+
   create_table "tags", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "name", limit: 100
@@ -71,5 +101,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_04_220739) do
   add_foreign_key "claimed_categories", "users"
   add_foreign_key "claimed_tags", "tags"
   add_foreign_key "claimed_tags", "users"
+  add_foreign_key "restaurant_categories", "categories"
+  add_foreign_key "restaurant_categories", "restaurants"
+  add_foreign_key "restaurant_tags", "restaurants"
+  add_foreign_key "restaurant_tags", "tags"
   add_foreign_key "tags", "users"
 end
