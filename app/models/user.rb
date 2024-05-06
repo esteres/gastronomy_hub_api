@@ -37,7 +37,7 @@ class User < ApplicationRecord
 			message: 'must contain at least 10 characters, ' \
 								'one lowercase letter, one uppercase letter, ' \
 								'and one of the following characters: !, @, #, ?, or ]'
-		}, on: %i[create update]
+		}, on: %i[create update], if: -> { password.present? }
   
   def with_private_categories
     categories_created
