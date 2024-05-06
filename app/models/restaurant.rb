@@ -7,6 +7,10 @@ class Restaurant < ApplicationRecord
   has_many :restaurant_tags, dependent: :destroy
   has_many :tags, through: :restaurant_tags
 
+  has_many :reviews, dependent: :destroy
+  has_many :rater_users,
+    through: :reviews, source: :user
+
   has_many :locations, dependent: :destroy
 
   enum contact_information_type: {

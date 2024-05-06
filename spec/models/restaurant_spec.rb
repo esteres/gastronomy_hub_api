@@ -7,6 +7,8 @@ RSpec.describe Restaurant, type: :model do
      it { should have_many(:categories).through(:restaurant_categories) }
      it { should have_many(:restaurant_tags).dependent(:destroy) }
      it { should have_many(:tags).through(:restaurant_tags) }
+     it { should have_many(:reviews).dependent(:destroy) }
+     it { should have_many(:rater_users).through(:reviews) }
      it { should have_many(:locations).dependent(:destroy) }
   end
 

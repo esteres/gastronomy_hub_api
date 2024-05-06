@@ -6,7 +6,7 @@ class CreateReviews < ActiveRecord::Migration[7.1]
       t.string :title, limit: 100, null: false
       t.text :content
       t.date :visit_date, null: false
-      t.integer :recommendation, null: false
+      t.boolean :recommendation, null: false
       t.integer :rating, null: false
       t.integer :ambience_rating
       t.integer :service_rating

@@ -7,8 +7,14 @@ class User < ApplicationRecord
   has_many :tags_created,
     -> { active },
 		class_name: 'Tag'
+
   has_many :claimed_categories, dependent: :destroy
   has_many :claimed_tags, dependent: :destroy
+
+  has_many :reviews, dependent: :destroy
+  has_many :rated_restaurants,
+  	through: :reviews, source: :restaurant,
+	dependent: :destroy
 
   PASSWORD_REGEX = /\A(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#?])[a-zA-Z\d!@#?]{10,}\z/
 

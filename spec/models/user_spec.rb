@@ -9,6 +9,8 @@ RSpec.describe User, type: :model do
     it { should have_many(:tags_created).class_name('Tag') }
     it { should have_many(:claimed_categories).dependent(:destroy) }
     it { should have_many(:claimed_tags).dependent(:destroy) }
+    it { should have_many(:reviews).dependent(:destroy) }
+    it { should have_many(:rated_restaurants).through(:reviews).dependent(:destroy) }
   end
 
   describe 'validations' do
