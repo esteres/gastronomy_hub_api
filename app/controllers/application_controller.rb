@@ -32,6 +32,19 @@ class ApplicationController < ActionController::API
     raise AuthenticationError
   end
 
+  def authorize_user!
+    token, _options = token_and_options(request)
+
+    user_id = AuthenticationTokenService.decode(token)
+    user = User.find_by('id = ?', user_id)
+
+    unless user&.id == params[:id].to_i
+      raise AuthorizationError
+    end
+  rescue JWT::DecodeError
+    raise AuthenticationError
+  end
+
   def parameter_missing(error)
     render json: {
       error: "param is missing or the value is empty: #{error.param}"
