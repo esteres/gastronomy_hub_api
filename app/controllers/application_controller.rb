@@ -20,7 +20,7 @@ class ApplicationController < ActionController::API
   
   private
 
-  def authenticate_user
+  def authenticate_user!
     token, _options = token_and_options(request)
     user_id = AuthenticationTokenService.decode(token)
     user = User.find_by('id = ?', user_id)

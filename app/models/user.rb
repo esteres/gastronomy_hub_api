@@ -2,10 +2,8 @@ class User < ApplicationRecord
   include DowncaseAttributes
 
   has_many :categories_created,
-		-> { active },
 		class_name: 'Category'
   has_many :tags_created,
-    -> { active },
 		class_name: 'Tag'
 
   has_many :claimed_categories, dependent: :destroy
@@ -16,7 +14,7 @@ class User < ApplicationRecord
   	through: :reviews, source: :restaurant,
 	dependent: :destroy
 
-  PASSWORD_REGEX = /\A(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#?])[a-zA-Z\d!@#?]{10,}\z/
+  PASSWORD_REGEX = /\A(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#?\]])[a-zA-Z\d!@#?\]]{10,}\z/
 
   has_secure_password
 

@@ -1,6 +1,7 @@
 module Api
   module V1
     class UsersController < ApplicationController
+      before_action :authorize_user!, only: %i[show update]
       before_action :set_user, only: %i[show update]
 
       def create
@@ -34,7 +35,7 @@ module Api
       private
 
       def user_representer
-        UserRepresenter.new(@user).as_json
+        @user_representer ||= UserRepresenter.new(@user).as_json
       end
 
       def set_user
