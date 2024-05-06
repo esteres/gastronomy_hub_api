@@ -1,5 +1,5 @@
 require 'rails_helper'
-require_relative '../support/shared_examples/validate_claimable_entity'
+require_relative '../support/shared_examples/validates_claimable_entity'
 
 RSpec.describe Category, type: :model do
   describe 'associations' do
@@ -12,7 +12,7 @@ RSpec.describe Category, type: :model do
   describe 'validations' do
     let!(:category) { create(:category) }
 
-    it_behaves_like :validate_claimable_entity, :category
+    it_behaves_like :validates_claimable_entity, :category
 
     context 'with icon_url' do
       let(:icon_url) { 'https://example.com/icon.png' }
@@ -74,9 +74,8 @@ RSpec.describe Category, type: :model do
   end
 
   describe 'callbacks' do
-    it 'downcases name before saving' do
-      category = create(:category, name: 'TestCategory')
-      expect(category.name).to eq('testcategory')
-    end
+    it_behaves_like :downcases_attribute_before_saving,
+      :category,
+      :name, 'CATEGORY NAME'
   end
 end

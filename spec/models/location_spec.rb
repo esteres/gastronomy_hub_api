@@ -1,5 +1,5 @@
 require 'rails_helper'
-require_relative '../support/shared_examples/validate_downcased_attribute'
+require_relative '../support/shared_examples/downcases_attribute_before_saving'
 
 RSpec.describe Location, type: :model do
   describe 'associations' do
@@ -17,8 +17,6 @@ RSpec.describe Location, type: :model do
     it { should validate_presence_of(:address) }
     it { should validate_length_of(:address).is_at_most(255) }
     it { should validate_length_of(:zip_code).is_at_most(50).allow_nil }
-    
-    it_behaves_like :validate_downcased_attribute, :location, :name, 'LOCATION NAME'
 
     context 'when zip_code is present' do
       subject { build(:location, zip_code: '12345') }
@@ -55,5 +53,11 @@ RSpec.describe Location, type: :model do
         end
       end
     end
+  end
+
+  describe 'callbacks' do
+    it_behaves_like :downcases_attribute_before_saving,
+      :location,
+      :name, 'LOCATION NAME'
   end
 end

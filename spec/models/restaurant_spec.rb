@@ -1,5 +1,5 @@
 require 'rails_helper'
-require_relative '../support/shared_examples/validate_downcased_attribute'
+require_relative '../support/shared_examples/downcases_attribute_before_saving'
 
 RSpec.describe Restaurant, type: :model do
   describe 'associations' do
@@ -18,8 +18,6 @@ RSpec.describe Restaurant, type: :model do
     it { should validate_uniqueness_of(:name).case_insensitive }
     it { should define_enum_for(:contact_information_type).with_values([:phone, :email]) }
     it { should validate_length_of(:contact_information).is_at_most(100) }
-
-    it_behaves_like :validate_downcased_attribute, :restaurant, :name, 'NAME'
     
     context 'when contact information is an email' do
       before { subject.contact_information_type = :email }
@@ -34,5 +32,11 @@ RSpec.describe Restaurant, type: :model do
       it { should allow_value('8789797').for(:contact_information) }
       it { should_not allow_value('not_a_number').for(:contact_information) }
     end
+  end
+
+  describe 'callbacks' do
+    it_behaves_like :downcases_attribute_before_saving,
+      :restaurant,
+      :name, 'RESTAURANT NAME'
   end
 end

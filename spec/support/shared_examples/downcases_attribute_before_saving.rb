@@ -1,5 +1,5 @@
-RSpec.shared_examples :validate_downcased_attribute do |model, attribute, upercased_value|
-  it 'validates that the attribute was downcased' do
+RSpec.shared_examples :downcases_attribute_before_saving do |model, attribute, upercased_value|
+  it 'downcases the title before saving' do
     model_instance = build(model, attribute => upercased_value)
     model_instance.save
     model_instance.reload

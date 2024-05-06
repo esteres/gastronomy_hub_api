@@ -1,5 +1,5 @@
 require 'rails_helper'
-require_relative '../support/shared_examples/validate_claimable_entity'
+require_relative '../support/shared_examples/validates_claimable_entity'
 
 RSpec.describe Tag, type: :model do
   describe 'associations' do
@@ -12,7 +12,7 @@ RSpec.describe Tag, type: :model do
   describe 'validations' do
     let!(:tag) { create(:tag) }
 
-    it_behaves_like :validate_claimable_entity, :tag
+    it_behaves_like :validates_claimable_entity, :tag
   end
 
   describe 'scopes' do
@@ -28,9 +28,8 @@ RSpec.describe Tag, type: :model do
   end
 
   describe 'callbacks' do
-    it 'downcases name before saving' do
-      tag = create(:tag, name: 'TestTag')
-      expect(tag.name).to eq('testtag')
-    end
+    it_behaves_like :downcases_attribute_before_saving,
+      :tag,
+      :name, 'TAG NAME'
   end
 end

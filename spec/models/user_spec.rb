@@ -1,5 +1,5 @@
 require 'rails_helper'
-require_relative '../support/shared_examples/validate_downcased_attribute'
+require_relative '../support/shared_examples/downcases_attribute_before_saving'
 
 RSpec.describe User, type: :model do
   let!(:user) { create(:user) }
@@ -40,7 +40,6 @@ RSpec.describe User, type: :model do
     end
 
     it { should have_secure_password }
-    it_behaves_like :validate_downcased_attribute, :user, :email, 'ESTEBAN@GMAIL.COM'
   end
 
   describe 'scopes' do
@@ -65,5 +64,11 @@ RSpec.describe User, type: :model do
         expect(user.tags_created).not_to include(tag2)
       end
     end
+  end
+
+  describe 'callbacks' do
+    it_behaves_like :downcases_attribute_before_saving,
+      :user,
+      :email, 'ESTEBAN@GMAIL.COM'
   end
 end
