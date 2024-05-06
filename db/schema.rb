@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_05_005435) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_05_222029) do
   create_table "categories", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "name", limit: 100, null: false
@@ -23,6 +23,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_05_005435) do
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_categories_on_name", unique: true
     t.index ["user_id"], name: "index_categories_on_user_id"
+  end
+
+  create_table "cities", force: :cascade do |t|
+    t.string "name", limit: 100
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_cities_on_name", unique: true
   end
 
   create_table "claimed_categories", force: :cascade do |t|
@@ -43,6 +50,30 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_05_005435) do
     t.index ["tag_id"], name: "index_claimed_tags_on_tag_id"
     t.index ["user_id", "tag_id"], name: "index_claimed_tags_on_user_id_and_tag_id", unique: true
     t.index ["user_id"], name: "index_claimed_tags_on_user_id"
+  end
+
+  create_table "countries", force: :cascade do |t|
+    t.string "name", limit: 100
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_countries_on_name", unique: true
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.string "name", limit: 100
+    t.string "address", limit: 255
+    t.string "zip_code", limit: 50
+    t.integer "restaurant_id", null: false
+    t.integer "city_id", null: false
+    t.integer "state_id", null: false
+    t.integer "country_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["city_id"], name: "index_locations_on_city_id"
+    t.index ["country_id"], name: "index_locations_on_country_id"
+    t.index ["name", "address"], name: "index_locations_on_name_and_address", unique: true
+    t.index ["restaurant_id"], name: "index_locations_on_restaurant_id"
+    t.index ["state_id"], name: "index_locations_on_state_id"
   end
 
   create_table "restaurant_categories", force: :cascade do |t|
@@ -75,6 +106,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_05_005435) do
     t.index ["name"], name: "index_restaurants_on_name", unique: true
   end
 
+  create_table "states", force: :cascade do |t|
+    t.string "name", limit: 100
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_states_on_name", unique: true
+  end
+
   create_table "tags", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "name", limit: 100
@@ -101,6 +139,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_05_005435) do
   add_foreign_key "claimed_categories", "users"
   add_foreign_key "claimed_tags", "tags"
   add_foreign_key "claimed_tags", "users"
+  add_foreign_key "locations", "cities"
+  add_foreign_key "locations", "countries"
+  add_foreign_key "locations", "restaurants"
+  add_foreign_key "locations", "states"
   add_foreign_key "restaurant_categories", "categories"
   add_foreign_key "restaurant_categories", "restaurants"
   add_foreign_key "restaurant_tags", "restaurants"

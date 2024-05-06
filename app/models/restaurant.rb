@@ -1,11 +1,13 @@
 class Restaurant < ApplicationRecord
-  include SharedMethods
+  include DowncaseAttributes
 
   has_many :restaurant_categories, dependent: :destroy
   has_many :categories, through: :restaurant_categories
 
   has_many :restaurant_tags, dependent: :destroy
   has_many :tags, through: :restaurant_tags
+
+  has_many :locations, dependent: :destroy
 
   enum contact_information_type: {
     phone: 0,
@@ -20,9 +22,6 @@ class Restaurant < ApplicationRecord
   validates :contact_information, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }, if: -> { email? }
   validates :contact_information, format: { with: /\A\d+\z/ }, if: -> { phone? }
 
-  def initialize(*args)
-    @downcase_field = :name
-
-    super
-  end
+  downcase_attributes :name, :contact_information, if: -> { email? }
+  downcase_attributes :name
 end
