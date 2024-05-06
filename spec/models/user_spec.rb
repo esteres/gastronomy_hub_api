@@ -28,7 +28,6 @@ RSpec.describe User, type: :model do
     it { should validate_length_of(:email).is_at_most(255) }
 
     it 'validates password format' do
-      user = User.new(email: 'test@example.com')
       user.password = 'invalid'
       expect(user).not_to be_valid
       expect(user.errors[:password])
@@ -47,7 +46,6 @@ RSpec.describe User, type: :model do
   describe 'scopes' do
     describe '.categories_created' do
       it 'returns categories created by the user' do
-        user = create(:user)
         category1 = create(:category, user_id: user.id)
         category2 = create(:category)
 
@@ -58,7 +56,6 @@ RSpec.describe User, type: :model do
 
     describe '.tags_created' do
       it 'returns tags created by the user' do
-        user = create(:user)
         tag1 = create(:tag, user_id: user.id)
         tag2 = create(:tag)
 
@@ -72,5 +69,25 @@ RSpec.describe User, type: :model do
     it_behaves_like :downcases_attribute_before_saving,
       :user,
       :email, 'ESTEBAN@GMAIL.COM'
+  end
+
+  describe '#with_private_categories' do
+    it 'returns private categories created by the user' do
+      category = create(:category, is_public: false, user: user)
+      public_category = create(:category, is_public: true, user: user)
+
+      expect(user.with_private_categories).to include(category)
+      expect(user.with_private_categories).not_to include(public_category)
+    end
+  end
+
+  describe '#with_private_tags' do
+    it 'returns private tags created by the user' do
+      tag = create(:tag, is_public: false, user: user)
+      public_tag = create(:tag, is_public: true, user: user)
+
+      expect(user.with_private_tags).to include(tag)
+      expect(user.with_private_tags).not_to include(public_tag)
+    end
   end
 end

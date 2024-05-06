@@ -9,7 +9,10 @@ module Claimable
     validates_uniqueness_of :name, case_sensitive: false
     validates :priority, inclusion: { in: priorities.keys }
 
+    # get those records that the user didn't soft delete already
     scope :active, -> { where(active: true) }
+
+    scope :public_ones, -> { where(is_public: true) }
 
     downcase_attributes :name
   end

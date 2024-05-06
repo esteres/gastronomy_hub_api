@@ -5,6 +5,7 @@ FactoryBot.define do
     priority { :low }
     active { true }
     is_public { true }
-    association :user
+
+    user
   end
 end

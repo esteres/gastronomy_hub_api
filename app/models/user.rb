@@ -38,4 +38,16 @@ class User < ApplicationRecord
 								'one lowercase letter, one uppercase letter, ' \
 								'and one of the following characters: !, @, #, ?, or ]'
 		}, on: %i[create update]
+  
+  def with_private_categories
+    categories_created
+      .merge(Category.public_ones)
+      .invert_where
+  end
+
+  def with_private_tags
+    tags_created
+      .merge(Tag.public_ones)
+      .invert_where
+  end
 end
