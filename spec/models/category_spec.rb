@@ -1,4 +1,5 @@
 require 'rails_helper'
+require_relative '../support/shared_examples/validate_claimable_entity'
 
 RSpec.describe Category, type: :model do
   describe 'associations' do
@@ -11,10 +12,7 @@ RSpec.describe Category, type: :model do
   describe 'validations' do
     let!(:category) { create(:category) }
 
-    it { should validate_presence_of(:name) }
-    it { should validate_length_of(:name).is_at_most(100) }
-    it { should validate_uniqueness_of(:name).case_insensitive }
-    it { should define_enum_for(:priority).with_values([:low, :medium, :high]) }
+    it_behaves_like :validate_claimable_entity, :category
 
     context 'with icon_url' do
       let(:icon_url) { 'https://example.com/icon.png' }

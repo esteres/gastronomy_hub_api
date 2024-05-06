@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  include SharedMethods
+  include DowncaseAttributes
 
   has_many :categories_created,
 		-> { active },
@@ -13,6 +13,8 @@ class User < ApplicationRecord
   PASSWORD_REGEX = /\A(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#?])[a-zA-Z\d!@#?]{10,}\z/
 
   has_secure_password
+
+  downcase_attributes :email
   
   validates :email,
 	  format: {
@@ -30,10 +32,4 @@ class User < ApplicationRecord
 								'one lowercase letter, one uppercase letter, ' \
 								'and one of the following characters: !, @, #, ?, or ]'
 		}, on: %i[create update]
-
-  def initialize(*args)
-    @downcase_field = :email
-
-    super
-  end
 end

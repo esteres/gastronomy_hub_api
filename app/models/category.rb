@@ -1,5 +1,4 @@
 class Category < ApplicationRecord
-  include SharedMethods
   include Claimable
 
   belongs_to :user
@@ -15,10 +14,4 @@ class Category < ApplicationRecord
     },
     allow_blank: true,
     length: { maximum: 255 }
-
-  def initialize(*args)
-    @downcase_field = :name
-
-    super
-  end
 end

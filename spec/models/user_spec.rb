@@ -1,4 +1,5 @@
 require 'rails_helper'
+require_relative '../support/shared_examples/validate_downcased_attribute'
 
 RSpec.describe User, type: :model do
   let!(:user) { create(:user) }
@@ -16,7 +17,12 @@ RSpec.describe User, type: :model do
         .case_insensitive.with_message('is already associated with an existing user')
     end
     it { should allow_value('test@example.com').for(:email) }
-    it { should_not allow_value('invalid_email').for(:email).with_message('is invalid. Please enter a valid email address') }
+    it 'email is invalid' do
+      should_not
+        allow_value('invalid_email')
+        .for(:email)
+        .with_message('is invalid. Please enter a valid email address')
+    end
     it { should validate_length_of(:email).is_at_most(255) }
 
     it 'validates password format' do
@@ -34,6 +40,7 @@ RSpec.describe User, type: :model do
     end
 
     it { should have_secure_password }
+    it_behaves_like :validate_downcased_attribute, :user, :email, 'ESTEBAN@GMAIL.COM'
   end
 
   describe 'scopes' do
